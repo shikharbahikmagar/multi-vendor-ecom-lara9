@@ -22,6 +22,7 @@ class AdminController extends Controller
     //redirect to dashboard
     public function dashboard()
     {
+        //dd("teset");
         return view('admin.dashboard');
     }
     // admin login page
@@ -44,7 +45,7 @@ class AdminController extends Controller
 
                 ];
                 $this->validate($request, $rules, $cutomMessages);
-            
+
                 //check if email and password is correct with the help of auth guard
             if(Auth::guard('admin')->attempt(['email'=>$data['email'], 'password'=>$data['password'], 'status'=>1]))
             {
@@ -57,7 +58,7 @@ class AdminController extends Controller
         //echo $pass = Hash::make('123456'); die;
         return view('admin.login');
     }
-    
+
     //admin logout
     public function logout()
     {
@@ -79,7 +80,7 @@ class AdminController extends Controller
                 {
                     Admin::where('id', Auth::guard('admin')->user()->id)->update(['password'=>bcrypt($data['new_password'])]);
                     return redirect()->back()->with('success_message', 'Password updated Successfully');
-                    
+
                 }
                 else
                 {
@@ -109,9 +110,9 @@ class AdminController extends Controller
         {
             return "false";
         }
-        
-        
-        
+
+
+
     }
     //update admin details
     public function updateAdminDetail(Request $request)
@@ -119,7 +120,7 @@ class AdminController extends Controller
         if($request->isMethod('post'))
         {
             $data = $request->all();
-           
+
             $rules = [
                 'user_name' => 'required|regex:/^[\pL\s]+$/u',
                 'mobile' => 'required|numeric|digits:10',
@@ -137,12 +138,12 @@ class AdminController extends Controller
             // dd("hello");
             if($request->hasFile('admin_image'))
             {
-           
+
                 $image_tmp = $request->file('admin_image');
                 // echo "<pre>"; print_r($image_tmp); die;
                 if($image_tmp->isValid())
                 {
-                   $extension = $image_tmp->getClientOriginalExtension(); 
+                   $extension = $image_tmp->getClientOriginalExtension();
                    $image_name = rand(111,99999).'.'.$extension;
                    $Image_path = 'admin/images/photos/'.$image_name;
 
@@ -155,7 +156,7 @@ class AdminController extends Controller
                 $image_name = $data['admin_current_image'];
             }
 
-            Admin::where('id', Auth::guard('admin')->user()->id)->update(['name'=>$data['user_name'], 
+            Admin::where('id', Auth::guard('admin')->user()->id)->update(['name'=>$data['user_name'],
             'mobile'=>$data['mobile'], 'image'=>$image_name]);
             return redirect()->back()->with('success_message', 'Admin Details Updated Successfully');
         }
@@ -193,12 +194,12 @@ class AdminController extends Controller
             // dd("hello");
             if($request->hasFile('vendor_image'))
             {
-           
+
                 $image_tmp = $request->file('vendor_image');
                 // echo "<pre>"; print_r($image_tmp); die;
                 if($image_tmp->isValid())
                 {
-                   $extension = $image_tmp->getClientOriginalExtension(); 
+                   $extension = $image_tmp->getClientOriginalExtension();
                    $image_name = rand(111,99999).'.'.$extension;
                    $Image_path = 'admin/images/photos/'.$image_name;
 
@@ -211,7 +212,7 @@ class AdminController extends Controller
                 $image_name = $data['vendor_current_image'];
             }
 
-            Admin::where('id', Auth::guard('admin')->user()->id)->update(['name'=>$data['vendor_name'], 
+            Admin::where('id', Auth::guard('admin')->user()->id)->update(['name'=>$data['vendor_name'],
             'mobile'=>$data['mobile'], 'image'=>$image_name]);
             //update vendor table
               Vendor::where('id', Auth::guard('admin')->user()->vendor_id)->update(['name'=>$data['vendor_name'],'address'=>$data['vendor_address'],
@@ -253,12 +254,12 @@ class AdminController extends Controller
             // dd("hello");
             if($request->hasFile('address_proof_image'))
             {
-           
+
                 $image_tmp = $request->file('address_proof_image');
                 // echo "<pre>"; print_r($image_tmp); die;
                 if($image_tmp->isValid())
                 {
-                   $extension = $image_tmp->getClientOriginalExtension(); 
+                   $extension = $image_tmp->getClientOriginalExtension();
                    $image_name = rand(111,99999).'.'.$extension;
                    $Image_path = 'vendor/images/address_proof/'.$image_name;
 
@@ -318,8 +319,8 @@ class AdminController extends Controller
             //dd($vendorBankDetails);
              return view('vendor.settings.update_vendor_details')->with(compact('form_title','slug','vendorBankDetails'));
         }
-        
-        
+
+
 
     }
     //admins management
@@ -359,14 +360,14 @@ class AdminController extends Controller
             if($data['status'] == "Active")
             {
                 $status = 0;
-            } 
+            }
             else
             {
                 $status = 1;
             }
             Admin::where('id', $data['admin_id'])->update(['status'=>$status]);
             return response()->json(['status'=>$status, 'admin_id'=>$data['admin_id']]);
-            
+
         }
     }
     //catalogues for admin
@@ -377,8 +378,8 @@ class AdminController extends Controller
             $genres = Category::where('status', 1)->get()->toArray();
             return view('admin.settings.view_admin_catalogues')->with(compact('type', 'genres'));
         }
-        
-        
+
+
     }
     //catalogue for vendor
     public function vendorCatalogue($type)
@@ -388,15 +389,16 @@ class AdminController extends Controller
         {
             $genres = Category::where(['vendor_id'=> Auth::guard('admin')->user()->vendor_id])->get()->toArray();
             // dd($genres);
-             return view('vendor.catalogue.genre')->with(compact('type', 'genres'));
+             return view('vendor.catalogue.catalogue')->with(compact('type', 'genres'));
         }
         //for authors table
         else if($type == "authors")
         {
             $authors = Author::where(['vendor_id'=> Auth::guard('admin')->user()->vendor_id])->get()->toArray();
-            dd($authors);
-             return view('vendor.catalogue.authors')->with(compact('type', 'authors'));
+            // dd($authors);
+            return view('vendor.catalogue.catalogue')->with(compact('type', 'authors'));
         }
+
     }
     public function addEditGenre(Request $request, $id=null)
     {
@@ -426,18 +428,18 @@ class AdminController extends Controller
                 'description.required' => 'Description is Required',
                 'url.required' => 'URL is Required',
                 'cat_name.regex' => 'Valid Name is Required',
-               
+
 
             ];
             $this->validate($request, $rules, $cutomMessages);
               if($request->hasFile('cat_image'))
             {
-           
+
                 $image_tmp = $request->file('cat_image');
                 // echo "<pre>"; print_r($image_tmp); die;
                 if($image_tmp->isValid())
                 {
-                   $extension = $image_tmp->getClientOriginalExtension(); 
+                   $extension = $image_tmp->getClientOriginalExtension();
                    $image_name = rand(111,99999).'.'.$extension;
                    $Image_path = 'vendor/images/category_images/'.$image_name;
 
@@ -450,7 +452,7 @@ class AdminController extends Controller
                 $image_name = $data['current_cat_image'];
             }
             //save to database
-            $catDetails->vendor_id = Auth::guard('admin')->user()->vendor_id;            
+            $catDetails->vendor_id = Auth::guard('admin')->user()->vendor_id;
             $catDetails->category_name = $data['cat_name'];
             $catDetails->category_image = $image_name;
             $catDetails->category_discount = $data['cat_discount'];
@@ -461,13 +463,13 @@ class AdminController extends Controller
             $catDetails->meta_keywords = $data['meta_keywords'];
             $catDetails->status = 1;
             $catDetails->save();
-            
+
             return redirect('admin/vendor/genres')->with('success_message', $message);
 
         }
 
         // $catDetails = Category::where('vendor_id', Auth::guard('admin')->user()->vendor_id)->get()->toArray();
-        return view('vendor.catalogue.add_edit_genre')->with(compact('catDetails', 'title'));
+        return view('vendor.catalogue.add_edit_catalogue')->with(compact('catDetails', 'title'));
 
     }
     //update genres status
@@ -487,7 +489,7 @@ class AdminController extends Controller
                 $status = 1;
             }
             Category::where('id', $data['genre_id'])->update(['status'=> $status]);
-            
+
             return response()->json(['status'=> $status, 'genre_id'=>$data['genre_id']]);
         }
     }
