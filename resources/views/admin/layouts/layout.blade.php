@@ -5,7 +5,7 @@
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Skydash Admin</title>
+      <title>{{ Auth::guard('admin')->user()->type  }} Panel</title>
       <!-- plugins:css -->
       <!-- font awesome -->
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,10 +24,14 @@
       <link rel="stylesheet" href="{{ url('admin/css/vertical-layout-light/style.css') }}">
       <!-- endinject -->
       <link rel="shortcut icon" href="{{ url('admin/images/favicon.png') }}"/>
+      <!-- data table -->
+      <link rel="stylesheet" href="{{ url('admin/css/bootstrap.css') }}">
+      <link rel="stylesheet" href="{{ url('admin/css/dataTables.bootstrap4.min.css') }}">
+
    </head>
    <body>
       <div class="container-scroller">
-         <!-- partial:partials/_navbar.html -->  
+         <!-- partial:partials/_navbar.html -->
          @include('admin.layouts.header')
          <!-- partial -->
          <div class="container-fluid page-body-wrapper">
@@ -71,5 +75,22 @@
       <!-- End custom js for this page-->
       <!-- custom script file -->
       <script src="{{ url('admin/js/custom.js')}}"></script>
+      <!-- datatable -->
+      <script>
+         $(document).ready( function () {
+            $('#Sections').DataTable();
+         } );
+
+          $(document).ready( function () {
+            $('#categories').DataTable();
+         } );
+
+         $(document).ready( function () {
+            $('#brands').DataTable();
+         } );
+         $(document).ready( function () {
+            $('#products').DataTable();
+         } );
+      </script>
    </body>
 </html>

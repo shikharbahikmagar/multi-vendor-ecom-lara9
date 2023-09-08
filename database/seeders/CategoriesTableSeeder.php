@@ -16,9 +16,9 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         $categoriesRecords = [
-            ['id'=>1, 'category_name'=>'Technology', 'category_image'=>'', 'category_discount'=>2, 'description'=>'technology books', 'url'=>'techs-books', 'meta_title'=>'Tech', 'meta_description'=>'tech',
+            ['id'=>1, 'parent_id'=>1, 'section_id'=>1, 'category_name'=>'Technology', 'category_image'=>'', 'category_discount'=>2, 'description'=>'technology books', 'url'=>'techs-books', 'meta_title'=>'Tech', 'meta_description'=>'tech',
             'meta_keywords'=>'techs', 'status'=>1],
-            ['id'=>2, 'category_name'=>'Fiction', 'category_image'=>'', 'category_discount'=>2, 'description'=>'fiction books', 'url'=>'fiction-books', 'meta_title'=>'fiction', 'meta_description'=>'fiction',
+            ['id'=>2, 'parent_id'=>1, 'section_id'=>1, 'category_name'=>'Fiction', 'category_image'=>'', 'category_discount'=>2, 'description'=>'fiction books', 'url'=>'fiction-books', 'meta_title'=>'fiction', 'meta_description'=>'fiction',
             'meta_keywords'=>'fiction', 'status'=>1],
         ];
         Category::insert($categoriesRecords);

@@ -13,15 +13,17 @@ use App\Models\VendorsBankDetail;
 use App\Models\Country;
 use App\Models\Category;
 use App\Models\Author;
+use Illuminate\Routing\Redirector;
 use Response;
 use Image;
-
+use Session;
 
 class AdminController extends Controller
 {
     //redirect to dashboard
     public function dashboard()
     {
+        Session::put('page', 'dashboard');
         //dd("teset");
         return view('admin.dashboard');
     }
@@ -69,6 +71,7 @@ class AdminController extends Controller
     //update admin password
     public function updatePassword(Request $request)
     {
+        Session::put('page', 'passwords');
         if($request->isMethod('post'))
         {
             $data = $request->all();
@@ -101,6 +104,7 @@ class AdminController extends Controller
     //check current password admin
     public function CheckPassword(Request $request)
     {
+        Session::put('page', 'passwords');
         $data = $request->all();
         if(Hash::check($data['current_password'], Auth::guard('admin')->user()->password))
         {
@@ -110,13 +114,11 @@ class AdminController extends Controller
         {
             return "false";
         }
-
-
-
     }
     //update admin details
     public function updateAdminDetail(Request $request)
     {
+        Session::put('page', 'details');
         if($request->isMethod('post'))
         {
             $data = $request->all();
@@ -167,6 +169,7 @@ class AdminController extends Controller
     //update vendors details(personal, business, bank)
     public function updateVendorDetail($slug, Request $request)
     {
+        Session::put('page', 'details');
         if($slug == "personal")
         {
             if($request->isMethod('post'))
@@ -319,9 +322,6 @@ class AdminController extends Controller
             //dd($vendorBankDetails);
              return view('vendor.settings.update_vendor_details')->with(compact('form_title','slug','vendorBankDetails'));
         }
-
-
-
     }
     //admins management
     public function admins($type = null)
@@ -344,6 +344,7 @@ class AdminController extends Controller
     //view vendor details
     public function viewVendorDetail($id)
     {
+        Session::put('page', 'details');
         $vendorDetails = Admin::with('VendorPersonal', 'VendorBusiness', 'VendorBank')->where('id', $id)->first();
         // echo "<pre>"; print_r($vendorDetails); die;
         // $vendorDetails = json_decode(json_encode($vendorDetails), true);
@@ -381,6 +382,7 @@ class AdminController extends Controller
 
 
     }
+
     //catalogue for vendor
     public function vendorCatalogue($type)
     {

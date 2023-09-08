@@ -1,8 +1,8 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
-              <i class="icon-grid menu-icon"></i>
+            <a class="nav-link" href="{{ url('/admin/dashboard') }}" style="background-color: #4B49AC !important; color: #fff !important;">
+              <i class="icon-grid menu-icon" style="background-color: #4B49AC !important; color: #fff !important;"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
@@ -37,15 +37,27 @@
           </li>
           @elseif(Auth::guard('admin')->user()->type == "admin")
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings">
-              <i class="icon-layout menu-icon"></i>
+            <a class="nav-link" data-toggle="collapse" href="#ui-settings" aria-expanded="false" aria-controls="ui-settings"
+            @if(Session::get('page') == "passwords" || Session::get('page') == "details") 
+            style="background-color: #4B49AC !important; color: #fff !important;" @endif>
+              <i class="icon-layout menu-icon" style="color: #fff !important;"></i>
               <span class="menu-title">Settings</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-settings">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-password') }}">Update Password</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-details') }}">Update Details</a></li>
+              <ul class="nav flex-column sub-menu" style="background-color: #fff !important; color: #4B49AC !important;">
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-password') }}"
+                @if(Session::get('page') == "passwords") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>
+                 Update Password</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/update-admin-details') }}"
+                @if(Session::get('page') == "details") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>
+                 Update Details</a></li>
               </ul>
             </div>
           </li>
@@ -65,16 +77,36 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#catalogue_management" aria-expanded="false" aria-controls="catalogue_management">
+            <a class="nav-link" data-toggle="collapse" href="#catalogue_management" aria-expanded="false" aria-controls="catalogue_management"
+            @if(Session::get('page') == "categories" || Session::get('page') == "sections" || Session::get('page') == "brands" || Session::get('page') == "pages"
+            || Session::get('page') == "products") 
+            style="background-color: #4B49AC !important; color: #fff !important;" @endif>
               <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Catalogues</span>
+              <span class="menu-title">Catalogues Management</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="catalogue_management">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/catalogue/genres') }}">Genres</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/catalogue/author') }}">Authors</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/admins/catalogue/book') }}">Books</a></li>
+              <ul class="nav flex-column sub-menu" style="background-color: #fff !important; color: #4B49AC !important;">
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/sections') }}" @if(Session::get('page') == "sections") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>Sections</a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/categories') }}" @if(Session::get('page') == "categories") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>Categories</a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands') }}" @if(Session::get('page') == "brands") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>Brands</a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/products') }}" @if(Session::get('page') == "products") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>Products</a>
+                </li>
               </ul>
             </div>
           </li>
@@ -88,6 +120,23 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="{{ url('admin/user') }}">Users</a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ url('admin/subscriber') }}">Subscribers</a></li>
+              </ul>
+            </div>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#banner_management" aria-expanded="false" aria-controls="user_management"
+             @if(Session::get('page') == "banners") 
+            style="background-color: #4B49AC !important; color: #fff !important;" @endif>
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Banners Management</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="banner_management">
+              <ul class="nav flex-column sub-menu" style="background-color: #fff !important; color: #4B49AC !important;">
+                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/banners') }}" @if(Session::get('page') == "banners") 
+                  style="background-color: #4B49AC !important; color: #fff !important;" 
+                  @else style="background-color: #fff !important; color: #4B49AC !important;" 
+                  @endif>Home Page Banners</a></li>
               </ul>
             </div>
           </li>
